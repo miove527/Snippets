@@ -1,0 +1,108 @@
+<html>
+<h1>${topItem.getField("title")}</h1>
+
+<table border="1">
+
+<tr>
+<td><b>期刊:<b style="color:#FF0000"> ${topItem.getField('publicationTitle')}</b></b>（发表日期: <b>${topItem.getField("date")}</b>）</td>
+</tr>
+
+<tr>
+<td><b>作者:</b> ${topItem.getCreators().map((v) => v.firstName + " " + v.lastName).join("; ")}</td>
+</tr>
+
+
+<!-- 期刊分区 -->
+    <tr><td>
+        <b>期刊分区:</b> 
+        <!-- In Zotero7, the tags of Ethereal Style plugin are referenced. Please install Ethereal Style in advance. -->
+        ${{
+        let space = " ㅤㅤ ㅤㅤ"
+        return Array.prototype.map.call(
+          Zotero.ZoteroStyle.api.renderCell(topItem, "publicationTags").childNodes,
+          e => {
+            e.innerText =  space + e.innerText + space;
+            return e.outerHTML
+          }
+          ).join(space)
+        }}$
+    </td></tr>
+
+<!-- DOI or URL -->
+    <tr>
+      <td>
+        ${(() => {
+          const doi = topItem.getField("DOI");
+          if (doi) {
+            return `<b>DOI:</b> <a href="https://doi.org/${topItem.getField('DOI')}">${topItem.getField('DOI')}</a>`;
+          } else {
+            return `<b>URL:</b> <a href="${topItem.getField('url')}">${topItem.getField('url')}</a>`;
+          }
+        })()}
+      </td>
+    </tr>
+
+ <!-- 原文pdf链接 -->
+    <tr><td>
+        ${(() => {
+          const attachments = Zotero.Items.get(topItem.getAttachments());
+          if (attachments && attachments.length > 0) {
+            return `<b>Zotero_PDF:</b> <a href="zotero://open-pdf/0_${attachments[0].key}">${attachments[0].getFilename()}</a>`;
+          } else {
+            return `<b>Zotero_PDF:</b> `;
+          }
+        })()}
+	</td></tr>
+
+</table>
+
+<br>
+
+<div>
+<h1>摘要</h1>
+${topItem.getField('abstractNote')}
+<br>
+</div>
+
+<div>
+<ul>  
+  <li><b>概括:</b></li>
+</ul>
+</div>
+
+<h1>创新点</h1>
+
+<ul>  
+  <li>科学问题：</li>
+  <li>新模型\/方法\/工具：</li>
+</ul>
+
+<h1>背景</h1>
+
+<h1>研究意义</h1>
+<blockquote>Tips: 必要性、紧迫性、可行性</blockquote>
+<ul>  
+  <li>必要性</li>  
+</ul>
+
+<h1>逻辑链条</h1>
+<ul>  
+  <li><b>科学问题</b>：</li>
+
+</ul>
+
+<h1>实验方法</h1>
+<h2>Wet</h2>
+
+<h2>Dry</h2>
+
+
+<h1>思考</h1>
+<h2>Learn</h2>
+
+<h2>Qestion</h2>
+
+<h2>Improve</h2>
+
+
+</html>
